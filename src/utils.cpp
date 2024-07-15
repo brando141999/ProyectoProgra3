@@ -3,12 +3,14 @@
 #include <sstream>
 #include <algorithm>
 
+
 std::string readCSVToString(const std::string& filename) {
     std::ifstream file(filename);
     std::stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
 }
+
 
 std::vector<std::string> splitString(const std::string& str, const std::string& delimiter) {
     std::vector<std::string> tokens;
@@ -54,3 +56,5 @@ void removeQuotes(std::vector<std::vector<std::string>>& data) {
         }
     }
 }
+
+

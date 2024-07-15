@@ -5,7 +5,16 @@
 - Lopez Carrera, Brando Steve
 - Espinoza Salazar, Granit
 - Lopez Gambini, Elvis Alejandro
+## Indice 
+- Cargar el archivo CSV en una estructura de datos eficiente
 
+- Búsqueda de películas por palabra/frase o por tag
+
+- Visualización de las cinco películas más importantes y opción de cargar más
+
+- Mostrar sinopsis y opciones Like y Ver más tarde
+
+- Mostrar películas añadidas a Ver más tarde y sugerencias basadas en Likes
 ## Referencias Bibliograficas
 
 Documentación Oficial de Crow:
