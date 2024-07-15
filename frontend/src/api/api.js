@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const BAKEND_URL = 'http://localhost:18080';
 
 export const get_movies_tittle = async (movie) => {
@@ -10,6 +11,7 @@ export const get_movies_tittle = async (movie) => {
     });
     return res.data.results;
 }
+
 
 export const get_movies_tag = async (tag)=>{
     const res = await axios.get(`${BAKEND_URL}/tag/${tag}`);
@@ -73,6 +75,7 @@ export const undo= async () => {
     const res = await axios.post(`${BAKEND_URL}/undo`);
     return res.data;
 }
+
 
 export const update_history = async () => {
     const res = await axios.put(`${BAKEND_URL}/upd_history`);

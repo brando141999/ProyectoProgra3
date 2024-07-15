@@ -8,7 +8,7 @@ const Favoritos = () => {
     const undoTimeoutRef = useRef(null);
 
     useEffect(() => {
-        const fetchFavorite_movies = async () => {
+        const fetchFavorite_movies  = async () => {
             try {
                 const movies = await get_favorites();
                 setfavoritos(movies);
@@ -24,7 +24,7 @@ const Favoritos = () => {
         setShowFullSynopsis(prevState => ({...prevState, [index]: !prevState[index]}));
     };
 
-    const handleRemove = async (movieId) => {
+    const handleRemove = async  (movieId) => {
         try {
             await remove_liked_movie(movieId);
             setfavoritos(favoritos.filter(m => m.id !== movieId));
@@ -40,13 +40,13 @@ const Favoritos = () => {
         }
     };
 
-    const handleUndo = async () => {
+    const handleUndo  = async () => {
         try {
             if (undoTimeoutRef.current) {
                 clearTimeout(undoTimeoutRef.current);
                 undoTimeoutRef.current = null;
             }
-            await undo();
+            await undo() ;
             const movies = await get_favorites();
             setfavoritos(movies);
             setShowUndo(false);
@@ -88,7 +88,7 @@ const Favoritos = () => {
     );
 }
 
-export default Favoritos;
+export default  Favoritos;
 
 
 

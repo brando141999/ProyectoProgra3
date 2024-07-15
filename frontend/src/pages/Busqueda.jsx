@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { get_movies_tag, get_movies_tittle, liked_movie, watch_later } from '../api/api.js';
 
+
 const BusquedaTag = () => {
     const [searchTag, setSearchTag] = useState('');
     const [searchTitle, setSearchTitle] = useState('');
@@ -11,7 +12,7 @@ const BusquedaTag = () => {
     const [searchType, setSearchType] = useState(null); // null, 'tag' or 'title'
     const [resultsCount, setResultsCount] = useState(0); // Número de resultados encontrados
 
-    const fetchMoviesByTag = async (tag) => {
+    const fetchMoviesByTag  = async (tag) => {
         setIsLoading(true);
         try {
             const movies = await get_movies_tag(tag);
@@ -25,7 +26,7 @@ const BusquedaTag = () => {
         }
     };
 
-    const fetchMoviesByTitle = async (title) => {
+    const fetchMoviesByTitle  = async (title) => {
         setIsLoading(true);
         try {
             const movies = await get_movies_tittle(title);
@@ -39,7 +40,7 @@ const BusquedaTag = () => {
         }
     };
 
-    useEffect(() => {
+    useEffect(()=> {
         if (searchType === 'tag' && searchTag) {
             fetchMoviesByTag(searchTag);
         } else if (searchType === 'title' && searchTitle) {
@@ -47,7 +48,7 @@ const BusquedaTag = () => {
         }
     }, [searchTag, searchTitle, searchType]);
 
-    const handleSearchChange = (e) => {
+    const handleSearchChange  = (e) => {
         if (searchType === 'tag') {
             setSearchTag(e.target.value);
         } else if (searchType === 'title') {
@@ -64,7 +65,7 @@ const BusquedaTag = () => {
         }
     };
 
-    const toggleSynopsis = (index) => {
+    const toggleSynopsis = (index)=> {
         setShowFullSynopsis(prevState => ({ ...prevState, [index]: !prevState[index] }));
     };
 
@@ -184,4 +185,4 @@ const BusquedaTag = () => {
     );
 };
 
-export default BusquedaTag;
+export default  BusquedaTag;
