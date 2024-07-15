@@ -6,7 +6,7 @@
 - Espinoza Salazar, Granit
 - Lopez Gambini, Elvis Alejandro
 
-## Referencias Bibliografica
+## Referencias Bibliograficas
 
 Documentación Oficial de Crow:
 - https://crowcpp.org/master/
