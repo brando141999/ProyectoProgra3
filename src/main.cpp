@@ -25,36 +25,34 @@ int main() {
     db.loadFromCSV("../data/movies.csv");
 
     CROW_ROUTE(app, "/get_WatchLater")
-        .methods("GET"_method)([&db](){
-        auto movies = db.getMoviesToWatchLater();
-        crow::json::wvalue x;
-        for (size_t i = 0; i < movies.size(); ++i) {
-            const auto& movie = movies[i];
-            crow::json::wvalue movie_json;
-            movie_json["id"] = movie.imdb_id;
-            movie_json["tags"]= movie.tags;
-            movie_json["title"] = movie.title;
-            movie_json["synopsis"] = movie.plot_synopsis;
-            x["movies"][i] = std::move(movie_json);
-        }
-        return x;
-    });
+            .methods("GET"_method)([&db](){
+                auto movies = db.getMoviesToWatchLater();
+                crow::json::wvalue x;
+                for (size_t i = 0; i < movies.size(); ++i) {
+                    const auto& movie = movies[i];
+                    crow::json::wvalue movie_json;
+                    movie_json["id"] = movie.imdb_id;
+                    movie_json["tags"]= movie.tags;
+                    movie_json["title"] = movie.title;
+                    movie_json["synopsis"] = movie.plot_synopsis;
+                    x["movies"][i] = std::move(movie_json);
+                }
+                return x;
+            });
 
     CROW_ROUTE(app, "/search")
-            .methods("GET"_method)([&db](const crow::request& req){
-                auto query = req.url_params.get("query");
-                if (!query) {
-                    return crow::response(400, "Missing query parameter");
+            .methods("POST"_method)([&db](const crow::request& req){
+                auto body = crow::json::load(req.body);
+                if (!body) {
+                    return crow::response(400, "Invalid JSON");
                 }
-                std::string query_str = query;
-                auto results = db.searchByTitle(query_str);
+                std::string query = body["query"].s();
+                auto results = db.searchByTitle(query);
                 crow::json::wvalue x;
                 for (size_t i = 0; i < results.size(); ++i) {
                     const auto& movie = results[i];
                     crow::json::wvalue movie_json;
-                    movie_json["id"] = movie.imdb_id;
                     movie_json["title"] = movie.title;
-                    movie_json["tags"] = movie.tags;
                     movie_json["synopsis"] = movie.plot_synopsis;
                     x["results"][i] = std::move(movie_json);
                 }
@@ -79,20 +77,20 @@ int main() {
             });
 
     CROW_ROUTE(app, "/movies/<int>/<int>")
-    .methods("GET"_method)([&db](const int& page, const int& pageSize){
-        auto pageMovies = db.getMoviesByPage(page, pageSize);
-        crow::json::wvalue x;
-        for (size_t i = 0; i < pageMovies.size(); ++i) {
-            const auto& movie = pageMovies[i];
-            crow::json::wvalue movie_json;
-            movie_json["id"] = movie.imdb_id;
-            movie_json["title"] = movie.title;
-            movie_json["tags"] = movie.tags;
-            movie_json["synopsis"] = movie.plot_synopsis;
-            x["movies"][i] = std::move(movie_json);
-        }
-        return crow::response(x);
-    });
+            .methods("GET"_method)([&db](const int& page, const int& pageSize){
+                auto pageMovies = db.getMoviesByPage(page, pageSize);
+                crow::json::wvalue x;
+                for (size_t i = 0; i < pageMovies.size(); ++i) {
+                    const auto& movie = pageMovies[i];
+                    crow::json::wvalue movie_json;
+                    movie_json["id"] = movie.imdb_id;
+                    movie_json["title"] = movie.title;
+                    movie_json["tags"] = movie.tags;
+                    movie_json["synopsis"] = movie.plot_synopsis;
+                    x["movies"][i] = std::move(movie_json);
+                }
+                return crow::response(x);
+            });
 
     CROW_ROUTE(app, "/like")
             .methods("POST"_method)([&db](const crow::request& req){
@@ -205,11 +203,11 @@ int main() {
 
     CROW_ROUTE(app,"/undo")
             .methods("POST"_method)([&db](const crow::request& req) {
-            if (!db.historyIsEmpty()) {
-                db.restoreStateFromMemento();
-                return crow::response(200, "La última acción ha sido revertida con éxito.");
-            } else {
-                return crow::response(400, "No hay acciones para revertir.");
+                if (!db.historyIsEmpty()) {
+                    db.restoreStateFromMemento();
+                    return crow::response(200, "La última acción ha sido revertida con éxito.");
+                } else {
+                    return crow::response(400, "No hay acciones para revertir.");
                 }
             });
 
